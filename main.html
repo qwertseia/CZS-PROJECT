@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chinese Zodiac Finder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      background: #f0f0f0;
+    }
+    h2 {
+      color: #333;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    input[type="text"] {
+      padding: 8px;
+      width: 200px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    #result {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Find Your Chinese Zodiac Sign</h2>
+
+  <div class="form-group">
+    <label for="month">Birth Month:</label>
+    <input type="text" id="month">
+  </div>
+  <div class="form-group">
+    <label for="date">Birth Date:</label>
+    <input type="text" id="date">
+  </div>
+  <div class="form-group">
+    <label for="year">Birth Year:</label>
+    <input type="text" id="year">
+  </div>
+  <button onclick="showZodiac()">Get My Zodiac Sign</button>
+
+  <div id="result"></div>
+
+  <script>
+    const zodiacSigns = [
+      { sign: "Rat", description: "Quick-witted, resourceful, and smart.", traits: "Adaptable, charming, curious" },
+      { sign: "Ox", description: "Strong, reliable, and trustworthy.", traits: "Patient, methodical, dependable" },
+      { sign: "Tiger", description: "Brave, confident, and competitive.", traits: "Ambitious, daring, enthusiastic" },
+      { sign: "Rabbit", description: "Gentle, quiet, and kind-hearted.", traits: "Compassionate, modest, sensitive" },
+      { sign: "Dragon", description: "Confident, intelligent, and enthusiastic.", traits: "Charismatic, fearless, innovative" },
+      { sign: "Snake", description: "Wise, discreet, and intuitive.", traits: "Mysterious, calm, philosophical" },
+      { sign: "Horse", description: "Energetic, active, and animated.", traits: "Independent, cheerful, witty" },
+      { sign: "Goat", description: "Calm, gentle, and sympathetic.", traits: "Creative, thoughtful, dependable" },
+      { sign: "Monkey", description: "Smart, curious, and clever.", traits: "Inventive, lively, mischievous" },
+      { sign: "Rooster", description: "Observant, hardworking, and brave.", traits: "Talkative, honest, ambitious" },
+      { sign: "Dog", description: "Loyal, honest, and kind.", traits: "Trustworthy, responsible, cautious" },
+      { sign: "Pig", description: "Generous, compassionate, and diligent.", traits: "Warm-hearted, sincere, tolerant" }
+    ];
+
+    function showZodiac() {
+      const yearInput = document.getElementById('year').value.trim();
+      const resultDiv = document.getElementById('result');
+
+      const year = parseInt(yearInput);
+
+      if (isNaN(year)) {
+        resultDiv.innerHTML = "<p>Please enter a valid birth year.</p>";
+        return;
+      }
+
+      const zodiacIndex = (year - 4) % 12;
+      const zodiac = zodiacSigns[zodiacIndex];
+
+      resultDiv.innerHTML = `
+        <h3>Your Chinese Zodiac Sign: ${zodiac.sign}</h3>
+        <p><strong>Description:</strong> ${zodiac.description}</p>
+        <p><strong>Traits:</strong> ${zodiac.traits}</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
