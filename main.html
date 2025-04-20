@@ -1,102 +1,408 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Chinese Zodiac Finder</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Goudy+Old+Style&family=Work+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
+    * { box-sizing: border-box; }
+
     body {
-      font-family: Arial, sans-serif;
-      padding: 30px;
-      background: #f0f0f0;
+      margin: 0;
+      font-family: 'Work Sans', sans-serif;
+      background: url('Chinese_Zodiac_Astrology_and_Gemstones.webp') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-    h2 {
-      color: #333;
+
+    .container, .result-container {
+      background: rgba(0, 0, 0, 0.333);
+      backdrop-filter: blur(8px);
+      border-radius: 18px;
+      padding: 35px;
+      box-shadow: 0 15px 30px rgba(255, 0, 0, 0.484);
+      width: 95%;
+      max-width: 650px;
+      transition: all 0.3s ease;
     }
-    .form-group {
-      margin-bottom: 15px;
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #ffffff;
+      font-weight: 600;
+      font-family: 'Goudy Old Style', serif;
+      font-size: 35px;
     }
+
+    .input-row {
+      display: flex;
+      gap: 15px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .input-group {
+      flex: 1;
+      min-width: 150px;
+    }
+
     label {
-      display: block;
+      font-size: 14px;
       margin-bottom: 5px;
+      display: block;
+      color: #ffffff;
     }
-    input[type="text"] {
-      padding: 8px;
-      width: 200px;
+
+    .input-wrapper {
+      position: relative;
     }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #bb0000;
+    }
+
+    .input-wrapper input {
+      width: 100%;
+      padding: 10px 10px 10px 34px;
+      border-radius: 10px;
+      border: 1.5px solid #ccc;
+      font-size: 15px;
+      background: #fff;
+      transition: all 0.2s ease;
+    }
+
+    .input-wrapper input:focus {
+      border-color: #f8b500;
+      box-shadow: 0 0 6px rgba(248, 182, 0, 0.866);
+      outline: none;
+    }
+
     button {
-      padding: 10px 20px;
-      margin-top: 10px;
-      background-color: #3498db;
-      color: white;
+      margin-top: 25px;
+      width: 100%;
+      padding: 12px;
+      background-color: #f8b600;
+      color: #fff;
+      font-weight: 600;
       border: none;
+      font-size: 16px;
+      border-radius: 12px;
       cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Work Sans', sans-serif;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      transform: translateY(0);
     }
-    #result {
-      margin-top: 30px;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+    button:hover {
+      background-color: #e09c00;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+      transform: translateY(-2px);
     }
+
+    button:active {
+      background-color: #c87f00;
+      transform: translateY(1px);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .result-container {
+      display: none;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      color: #fff;
+      position: relative;
+      background-size: 100% 100%;
+      background-position: center;
+      border-radius: 18px;
+      overflow: hidden;
+      width: 50%;
+      height: 60vh;
+      max-width: none;
+      max-height: none;
+      transition: all 0.3s ease;
+    }
+
+    .result-container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 0;
+    }
+
+    .result-container > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .zodiac-sign {
+      font-size: 36px;
+      font-weight: bold;
+      margin: 10px 0;
+      color: #f4d03f;
+      font-family: 'Goudy Old Style', serif;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.7);
+    }
+
+    .emoji {
+      font-size: 48px;
+      margin: 10px 0;
+      display: none;
+    }
+
+    #resultDescription {
+      max-width: 500px;
+      font-size: 20px;
+      line-height: 1.5;
+      margin: 1px 0 1px;
+      white-space: pre-wrap;
+      font-family: Perpetua, serif;
+      text-shadow: 1.5px 1.5px 5px rgba(0, 0, 0, 0.7);
+    }
+
+    .back-button {
+      background-color: #e00000;
+      padding: 10px 10px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 600;
+      border: none;
+      color: #fff;
+      cursor: pointer;
+      font-family: 'Work Sans', sans-serif;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      width: 100%;
+      max-width: 200px;
+      transition: all 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #b30000;
+    }
+
+    .invalid {
+      color: #ffcccc;
+      font-size: 14px;
+      margin-top: 10px;
+      text-align: center;
+    }
+
+    @media (max-width: 550px) {
+      .input-row {
+        flex-direction: column;
+      }
+    }
+
   </style>
 </head>
 <body>
+  <div class="container" id="inputContainer">
+    <h1>Discover Your Chinese Zodiac</h1>
+    <form id="zodiacForm">
+      <div class="input-row">
+        <div class="input-group">
+          <label for="month">Birth Month</label>
+          <div class="input-wrapper">
+            <i class="fas fa-calendar-alt"></i>
+            <input type="text" id="month" placeholder="e.g. January" />
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="date">Birth Day</label>
+          <div class="input-wrapper">
+            <i class="fas fa-birthday-cake"></i>
+            <input type="text" id="date" placeholder="e.g. 1" />
+          </div>
+        </div>
+        <div class="input-group">
+          <label for="year">Birth Year</label>
+          <div class="input-wrapper">
+            <i class="fas fa-hourglass-start"></i>
+            <input type="text" id="year" placeholder="e.g. 2001" />
+          </div>
+        </div>
+      </div>
 
-  <h2>Find Your Chinese Zodiac Sign</h2>
+      <button type="button" onclick="findZodiac()">REVEAL MY SIGN</button>
+      <div id="errorMsg" class="invalid"></div>
+    </form>
+  </div>
 
-  <div class="form-group">
-    <label for="month">Birth Month:</label>
-    <input type="text" id="month">
+  <div class="result-container" id="resultContainer">
+    <div class="emoji" id="resultEmoji"></div>
+    <div class="zodiac-sign" id="resultSign"></div>
+    <div id="resultDescription"></div>
+    <div style="width: 100%; display: flex; justify-content: center; margin-top: 15px;">
+      <button class="back-button" onclick="goBack()">Back</button>
+    </div>
   </div>
-  <div class="form-group">
-    <label for="date">Birth Date:</label>
-    <input type="text" id="date">
-  </div>
-  <div class="form-group">
-    <label for="year">Birth Year:</label>
-    <input type="text" id="year">
-  </div>
-  <button onclick="showZodiac()">Get My Zodiac Sign</button>
-
-  <div id="result"></div>
 
   <script>
-    const zodiacSigns = [
-      { sign: "Rat", description: "Quick-witted, resourceful, and smart.", traits: "Adaptable, charming, curious" },
-      { sign: "Ox", description: "Strong, reliable, and trustworthy.", traits: "Patient, methodical, dependable" },
-      { sign: "Tiger", description: "Brave, confident, and competitive.", traits: "Ambitious, daring, enthusiastic" },
-      { sign: "Rabbit", description: "Gentle, quiet, and kind-hearted.", traits: "Compassionate, modest, sensitive" },
-      { sign: "Dragon", description: "Confident, intelligent, and enthusiastic.", traits: "Charismatic, fearless, innovative" },
-      { sign: "Snake", description: "Wise, discreet, and intuitive.", traits: "Mysterious, calm, philosophical" },
-      { sign: "Horse", description: "Energetic, active, and animated.", traits: "Independent, cheerful, witty" },
-      { sign: "Goat", description: "Calm, gentle, and sympathetic.", traits: "Creative, thoughtful, dependable" },
-      { sign: "Monkey", description: "Smart, curious, and clever.", traits: "Inventive, lively, mischievous" },
-      { sign: "Rooster", description: "Observant, hardworking, and brave.", traits: "Talkative, honest, ambitious" },
-      { sign: "Dog", description: "Loyal, honest, and kind.", traits: "Trustworthy, responsible, cautious" },
-      { sign: "Pig", description: "Generous, compassionate, and diligent.", traits: "Warm-hearted, sincere, tolerant" }
+    const zodiacData = [
+      {
+        sign: 'Rat',
+        description: `Quick-witted, resourceful, and clever.
+
+The Chinese zodiac Rat holds a significant place in Chinese culture. In Chinese folklore, the Rat is known for its intelligence and ability to overcome challenges. In Chinese tradition, it is believed that wearing accessories or clothing with Rat imagery can bring luck and prosperity.
+
+People born in the Year of the Rat are believed to possess qualities such as wit, charm, and ambition. They are seen as quick thinkers and often excel in problem-solving.`,
+        bg: 'rat.jpg'
+      },
+      {
+        sign: 'Ox',
+        description: `Strong, reliable, and trustworthy.
+
+The Ox symbolizes strength and perseverance. In Chinese folklore, the Ox is admired for its hard work and dependability. Wearing Ox symbols is believed to promote resilience and endurance.
+
+People born in the Year of the Ox are seen as grounded individuals who value honesty and responsibility. They are known for their patience and strong work ethic.`,
+        bg: 'ox.jpg'
+      },
+      {
+        sign: 'Tiger',
+        description: `Brave, competitive, and confident.
+
+Tigers are symbols of courage and power in Chinese culture. Legends portray the Tiger as a fearless protector. Tiger charms are believed to bring strength and boldness.
+
+Those born in the Year of the Tiger are seen as leaders who face challenges head-on. They are passionate, ambitious, and often inspire others with their confidence.`,
+        bg: 'tiger.jpg'
+      },
+      {
+        sign: 'Rabbit',
+        description: `Gentle, quiet, and elegant.
+
+The Rabbit is associated with peace and refinement. In Chinese myths, the Moon Rabbit symbolizes kindness and tranquility. Rabbit symbols are worn for calmness and good fortune.
+
+People born in the Year of the Rabbit are seen as sensitive, graceful, and thoughtful. They are compassionate and value harmony in relationships.`,
+        bg: 'rabbit.jpg'
+      },
+      {
+        sign: 'Dragon',
+        description: `Energetic, fearless, and charismatic.
+
+The Dragon is a powerful and auspicious creature in Chinese mythology. It represents strength, success, and magic. Wearing Dragon symbols is believed to attract greatness.
+
+Born in the Year of the Dragon, individuals are often charismatic and full of vitality. They are ambitious dreamers who strive to achieve the extraordinary.`,
+        bg: 'dragon.jpg'
+      },
+      {
+        sign: 'Snake',
+        description: `Wise, mysterious, and calm.
+
+The Snake is a symbol of wisdom and intuition. It is respected in Chinese folklore for its depth and mystique. Snake charms are worn for protection and insight.
+
+People born in the Year of the Snake are known for their intellect and elegance. They often think deeply and make calculated decisions.`,
+        bg: 'snake.jpg'
+      },
+      {
+        sign: 'Horse',
+        description: `Free-spirited, active, and optimistic.
+
+The Horse represents energy, freedom, and progress. In stories, the Horse is known for its speed and spirit. Symbols of Horses are believed to bring vitality.
+
+Individuals born in the Year of the Horse are full of enthusiasm and independence. They are sociable, adventurous, and full of ideas.`,
+        bg: 'horse.jpg'
+      },
+      {
+        sign: 'Goat',
+        description: `Soft-hearted, artistic, and compassionate.
+
+Goats are symbols of peace and creativity. Chinese legends portray the Goat as gentle and kind. Goat symbols are worn to encourage empathy and artistic inspiration.
+
+Those born in the Year of the Goat are nurturing and intuitive. They often excel in creative fields and value beauty in all forms.`,
+        bg: 'goat.jpg'
+      },
+      {
+        sign: 'Monkey',
+        description: `Smart, curious, and fun-loving.
+
+Monkeys represent cleverness and versatility. In Chinese tales, the Monkey King is a witty and daring hero. Monkey imagery is said to boost creativity and playfulness.
+
+People born in the Year of the Monkey are energetic and inventive. They enjoy solving problems and bring joy wherever they go.`,
+        bg: 'monkey.jpg'
+      },
+      {
+        sign: 'Rooster',
+        description: `Hardworking, observant, and confident.
+
+Roosters are admired for their punctuality and precision. In Chinese tradition, they are a symbol of honesty and clarity. Rooster emblems promote awareness and alertness.
+
+Individuals born in the Year of the Rooster are proud and direct. They have a strong sense of style and a sharp eye for detail.`,
+        bg: 'rooster.jpg'
+      },
+      {
+        sign: 'Dog',
+        description: `Loyal, honest, and kind.
+
+Dogs are known for their loyalty and sense of justice. In Chinese lore, the Dog is a faithful guardian. Dog charms are thought to bring safety and sincerity.
+
+People born in the Year of the Dog are trustworthy and supportive. They have a strong moral compass and care deeply for others.`,
+        bg: 'dog.jpg'
+      },
+      {
+        sign: 'Pig',
+        description: `Generous, diligent, and compassionate.
+
+The Pig symbolizes wealth and warmth. It is celebrated in Chinese culture for its good nature. Pig symbols are worn to attract comfort and abundance.
+
+Those born in the Year of the Pig are sincere and giving. They enjoy life’s pleasures and are appreciated for their generosity.`,
+        bg: 'pig.jpg'
+      }
     ];
 
-    function showZodiac() {
-      const yearInput = document.getElementById('year').value.trim();
-      const resultDiv = document.getElementById('result');
 
+    function findZodiac() {
+      const month = document.getElementById("month").value.trim();
+      const date = document.getElementById("date").value.trim();
+      const yearInput = document.getElementById("year").value.trim();
       const year = parseInt(yearInput);
+      const errorMsg = document.getElementById("errorMsg");
 
-      if (isNaN(year)) {
-        resultDiv.innerHTML = "<p>Please enter a valid birth year.</p>";
+      if (!month || !date || !yearInput) {
+        errorMsg.textContent = "Please complete all birth details.";
+        setTimeout(() => { errorMsg.textContent = ""; }, 3000);
         return;
       }
 
-      const zodiacIndex = (year - 4) % 12;
-      const zodiac = zodiacSigns[zodiacIndex];
+      if (isNaN(year)) {
+        errorMsg.textContent = "Please enter a valid year.";
+        setTimeout(() => { errorMsg.textContent = ""; }, 3000);
+        return;
+      }
 
-      resultDiv.innerHTML = `
-        <h3>Your Chinese Zodiac Sign: ${zodiac.sign}</h3>
-        <p><strong>Description:</strong> ${zodiac.description}</p>
-        <p><strong>Traits:</strong> ${zodiac.traits}</p>
-      `;
+      errorMsg.textContent = "";
+
+      const index = (year - 4) % 12;
+      const zodiac = zodiacData[index];
+
+      document.getElementById("resultEmoji").textContent = zodiac.emoji || '';
+      document.getElementById("resultSign").textContent = zodiac.sign;
+      document.getElementById("resultDescription").textContent = zodiac.description;
+
+      const resultContainer = document.getElementById("resultContainer");
+      resultContainer.style.backgroundImage = `url('${zodiac.bg}')`;
+
+      document.getElementById("inputContainer").style.display = "none";
+      resultContainer.style.display = "flex";
+    }
+
+    function goBack() {
+      document.getElementById("zodiacForm").reset();
+      document.getElementById("resultContainer").style.display = "none";
+      document.getElementById("inputContainer").style.display = "block";
     }
   </script>
-
 </body>
 </html>
